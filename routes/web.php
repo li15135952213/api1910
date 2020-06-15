@@ -15,4 +15,4 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-//hhhhh
+Route::get('/test/hello','TestController@hello');
