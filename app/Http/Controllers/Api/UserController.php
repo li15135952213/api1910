@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Model\UserModel;
 use App\Model\TokenModel;
+use Illuminate\Support\Facades\Redis;
 
 class UserController extends Controller
 {
@@ -91,11 +92,20 @@ class UserController extends Controller
 //            echo $token;
 
             //报存token 后续验证使用
-            $data=[
-                'uid' => $user->user_id,
-                'token' =>$token
-            ];
-            TokenModel::insert($data);
+//            $data=[
+//                'uid' => $user->user_id,
+//                'token' =>$token
+//            ];
+
+            //将token保存到数据库
+//            TokenModel::insert($data);
+
+            //将token保存到Redis中
+//            $key = $token;
+            Redis::set($token,$user->user_id);
+
+            //设置key的过期时间
+
             $response=[
                 'error' => 0,
                 'msg' => 'ok',
@@ -116,10 +126,11 @@ class UserController extends Controller
         $token = $_GET['token'];
 
 //        检查token是否有效
-        $res =TokenModel::where(['token'=>$token])->first();
+//        $res =TokenModel::where(['token'=>$token])->first();
 
-        if($res){
-            $uid=$res->uid;
+        $uid=Redis::get($token);
+        if($uid){
+//            $uid=$res->uid;
             $user_info=UserModel::find($uid);
             //已登录
             echo $user_info->user_name.'欢迎来到个人中心';
