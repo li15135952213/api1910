@@ -136,7 +136,7 @@ class UserController extends Controller
             echo $user_info->user_name.'欢迎来到个人中心';
         }else{
             //未登录
-            echo '请登录';
+            echo '请登录1';
         }
     }
 }
