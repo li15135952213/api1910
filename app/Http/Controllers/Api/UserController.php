@@ -123,7 +123,16 @@ class UserController extends Controller
     //个人中心
     public function center(){
         //判断用户是否登录 判断是否有uid 字段
-        $token = $_GET['token'];
+
+        if(isset($_GET['token'])){
+            $token = $_GET['token'];
+        }else{
+            $response=[
+                'error' => 50007,
+                'msg' => '请先登录登录'
+            ];
+            return $response;
+        }
 
 //        检查token是否有效
 //        $res =TokenModel::where(['token'=>$token])->first();
@@ -136,7 +145,99 @@ class UserController extends Controller
             echo $user_info->user_name.'欢迎来到个人中心';
         }else{
             //未登录
-            echo '请登录1';
+            $response=[
+                'error' => 50008,
+                'msg' => '请先登录登录'
+            ];
+            return $response;
         }
+    }
+
+    //我的订单
+    public function orders(){
+        //鉴权
+        //判断用户是否登录 判断是否有uid 字段
+
+        if(isset($_GET['token'])){
+            $token = $_GET['token'];
+            //验证token是否有效
+            $uid=Redis::get($token);
+            if($uid){
+
+            }else{
+                //未登录
+                $response=[
+                    'error' => 50008,
+                    'msg' => '请先登录登录'
+                ];
+                return $response;
+            }
+        }else{
+            $response=[
+                'error' => 50007,
+                'msg' => '请先登录登录'
+            ];
+            return $response;
+        }
+
+
+        //订单信息
+        $arr=[
+            '545245554789658',
+            '789456789854125',
+            '555555222245891',
+            '457892156984716',
+        ];
+
+        $response=[
+            'error' => 0,
+            'msg' => 'ok',
+            'data' => [
+                'orders' => $arr
+            ]
+        ];
+        return $response;
+  }
+
+
+  //购物车接口
+    public function cart(){
+        //鉴权
+        //判断用户是否登录 判断是否有uid 字段
+
+//        if(isset($_GET['token'])){
+//            $token = $_GET['token'];
+//            //验证token是否有效
+//            $uid=Redis::get($token);
+//            if($uid){
+//
+//            }else{
+//                //未登录
+//                $response=[
+//                    'error' => 50008,
+//                    'msg' => '请先登录登录'
+//                ];
+//                return $response;
+//            }
+//        }else{
+//            $response=[
+//                'error' => 50007,
+//                'msg' => '请先登录登录'
+//            ];
+//            return $response;
+//        }
+        $goods=[
+            123,
+            456,
+            789
+        ];
+        $response=[
+            'error' => 0,
+            'msg' => 'ok',
+            'data' => [
+                'orders' => $goods
+            ]
+        ];
+        return $response;
     }
 }
