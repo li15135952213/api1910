@@ -12,11 +12,15 @@
 */
 
 Route::get('/', function () {
-    phpinfo();
+//    phpinfo();
     return view('welcome');
 });
 
+//测试
 Route::get('/test/hello','TestController@hello');
+Route::get('/test/sign1','TestController@sign1');
+Route::get('/secret','TestController@secret');
+Route::get('/test/www','TestController@www');
 
 
 Route::get('/user/reg','User\IndexController@reg');//前台用户注册
